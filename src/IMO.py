@@ -43,6 +43,9 @@ def get_form_data(a, section, roll_number):
 		ans = int(captcha[0]) + int(captcha[2])
 	elif captcha[1] == u'-':
 		ans = int(captcha[0]) - int(captcha[2])
+	else:
+		print(f'Unable to solve captcha! Question: {captcha}')
+		exit(1)
 
 	return {
 		'olympiad_selected': 'h',

@@ -43,9 +43,12 @@ def get_form_data(a, section, roll_number):
 		ans = int(captcha[0]) + int(captcha[2])
 	elif captcha[1] == u'-':
 		ans = int(captcha[0]) - int(captcha[2])
+	else:
+		print(f'Unable to solve captcha! Question: {captcha}')
+		exit(1)
 
 	return {
-		'olympiad_selected': 'b',
+		'olympiad_selected': 'c1',
 		'rollid1': SCHOOL_CODE,
 		'rollid2': '11',
 		'op': 'View+Results',
@@ -73,8 +76,7 @@ def process_result(a):
 		'marks': data[9].text.split("/")[0].strip(),
 		'international': data[11].text,
 		'zonal': data[15].text,
-		'school': data[19].text,
-		'qualified': data[23].text
+		'school': data[19].text
 	}
 
 
@@ -96,18 +98,17 @@ def main():
 	section = roll_number = error = 0
 
 	book = Workbook()
-	NSO_sheet = book.active
-	NSO_sheet.title = "NSO"
+	NCO_sheet = book.active
+	NCO_sheet.title = 'NCO'
 
-	NSO_sheet.append([
-		"Name",
-		"Roll Number",
-		"Section",
-		"Marks",
-		"International Rank",
-		"Zonal Rank",
-		"School Rank",
-		"Qualified"
+	NCO_sheet.append([
+		'Name',
+		'Roll Number',
+		'Section',
+		'Marks',
+		'International Rank',
+		'Zonal Rank',
+		'School Rank'
 	])
 
 	while section < len(SECTIONS):
@@ -118,18 +119,17 @@ def main():
 
 		if x:
 			print(result['name'], result['marks'])
-			NSO_sheet.append([
+			NCO_sheet.append([
 				result['name'],
 				result['roll'],
 				result['section'],
 				result['marks'],
 				result['international'],
 				result['zonal'],
-				result['school'],
-				result['qualified']
+				result['school']
 			])
 		section, roll_number, error = next_roll(section, roll_number, x, error)
-	book.save("Results NSO.xlsx")
+	book.save('Results: NCO.xlsx')
 
 
 if __name__ == '__main__':
